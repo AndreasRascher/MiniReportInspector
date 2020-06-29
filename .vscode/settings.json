@@ -1,0 +1,11 @@
+{
+    "al.codeAnalyzers": ["${PerTenantExtensionCop}","${CodeCop}","${UICop}"],
+    "al.enableCodeAnalysis": true,
+    "al.ruleSetPath": "./.codeAnalysis/thisproject.ruleset.json",
+    "CRS.OnSaveAlFileAction": "Rename",
+    "CRS.AlSubFolderName": "None",
+    "CRS.FileNamePattern": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.FileNamePatternExtensions": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.FileNamePatternPageCustomizations": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.RenameWithGit": false,
+}

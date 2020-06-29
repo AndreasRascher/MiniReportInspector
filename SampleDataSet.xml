@@ -1,0 +1,753 @@
+<?xml version="1.0" standalone="yes"?>
+<ReportDataSet name="MyTestReport" id="50100">
+    <DataItems>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01121212</Column>
+                <Column name="Name">Spotsmeyer's Furnishings</Column>
+                <Column name="City">Miami</Column>
+                <Column name="County">FL</Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01445544</Column>
+                <Column name="Name">Progressive Home Furnishings</Column>
+                <Column name="City">Chicago</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">2322,63</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">2322,63</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01454545</Column>
+                <Column name="Name">New Concepts Furniture</Column>
+                <Column name="City">Atlanta</Column>
+                <Column name="County">GA</Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">344207,6</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01905893</Column>
+                <Column name="Name">Candoxy Canada Inc.</Column>
+                <Column name="City">Thunder Bay</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01905899</Column>
+                <Column name="Name">Elkhorn Airport</Column>
+                <Column name="City">Elkhorn</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">01905902</Column>
+                <Column name="Name">London Candoxy Storage Campus</Column>
+                <Column name="City">London</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">10000</Column>
+                <Column name="Name">MÃ¶bel-Meller KG</Column>
+                <Column name="City">DÃ¼sseldorf</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">26399,19</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">259426,65</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">20000</Column>
+                <Column name="Name">BlÃ¼tenhaus GmbH</Column>
+                <Column name="City">MÃ¼nchen</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">10009,43</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">148372,39</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">20309920</Column>
+                <Column name="Name">Metatorad Malaysia Sdn Bhd</Column>
+                <Column name="City">PETALING JAYA, Selangor</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">20312912</Column>
+                <Column name="Name">Highlights Electronics Sdn Bhd</Column>
+                <Column name="City">KUALA LUMPUR</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">20339921</Column>
+                <Column name="Name">TraxTonic Sdn Bhd</Column>
+                <Column name="City">KUCHING, Sarawak</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">21233572</Column>
+                <Column name="Name">Somadis</Column>
+                <Column name="City">AGDAL-RABAT</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">21245278</Column>
+                <Column name="Name">Maronegoce</Column>
+                <Column name="City">CASABLANCA</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">21252947</Column>
+                <Column name="Name">ElectroMAROC</Column>
+                <Column name="City">TEMARA</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">27090917</Column>
+                <Column name="Name">Zanlan Corp.</Column>
+                <Column name="City">Carletonville</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">27321782</Column>
+                <Column name="Name">Karoo Supermarkets</Column>
+                <Column name="City">Bloemfontein</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">27489991</Column>
+                <Column name="Name">Durbandit Fruit Exporters</Column>
+                <Column name="City">Durban</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">30000</Column>
+                <Column name="Name">Gilde Jupiter Versicherungs AG</Column>
+                <Column name="City">Dortmund</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">9449,7</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">541098,42</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">31505050</Column>
+                <Column name="Name">Woonboulevard Kuitenbrouwer</Column>
+                <Column name="City">Zutphen</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">31669966</Column>
+                <Column name="Name">Meersen Meubelen</Column>
+                <Column name="City">Arnhem</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">31987987</Column>
+                <Column name="Name">Candoxy Nederland BV</Column>
+                <Column name="City">Amsterdam</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">32124578</Column>
+                <Column name="Name">Nieuwe Zandpoort NV</Column>
+                <Column name="City">Herentals</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">32656565</Column>
+                <Column name="Name">Antarcticopy</Column>
+                <Column name="City">Antwerpen</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">4000,25</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">4000,25</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">32789456</Column>
+                <Column name="Name">Lovaina Contractors</Column>
+                <Column name="City">Kaunas</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">33000019</Column>
+                <Column name="Name">Francematic</Column>
+                <Column name="City">PLAISIR</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">33002984</Column>
+                <Column name="Name">Parmentier Boutique</Column>
+                <Column name="City">PARIS</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">33022842</Column>
+                <Column name="Name">Livre Importants</Column>
+                <Column name="City">ESBLY</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">34010100</Column>
+                <Column name="Name">Libros S.A.</Column>
+                <Column name="City">Barcelona</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">34010199</Column>
+                <Column name="Name">CorporaciÃ³n Beta</Column>
+                <Column name="City">Valencia</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">34010602</Column>
+                <Column name="Name">Helguera industrial</Column>
+                <Column name="City">Madrid</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">35122112</Column>
+                <Column name="Name">Bilabankinn</Column>
+                <Column name="City">Kopavogur</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">35451236</Column>
+                <Column name="Name">Gagn &amp; Gaman</Column>
+                <Column name="City">Hafnafjordur</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">1358,82</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">1358,82</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">35963852</Column>
+                <Column name="Name">Heimilisprydi</Column>
+                <Column name="City">Reykjavik</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">3135,13</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">3135,13</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">38128456</Column>
+                <Column name="Name">MEMA Ljubljana d.o.o.</Column>
+                <Column name="City">Ljubljana</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">38546552</Column>
+                <Column name="Name">EXPORTLES d.o.o.</Column>
+                <Column name="City">Ljubljana</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">38632147</Column>
+                <Column name="Name">Centromerkur d.o.o.</Column>
+                <Column name="City">Johannesburg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">40000</Column>
+                <Column name="Name">Graphische Werke Landsberg</Column>
+                <Column name="City">Landsberg am Lech</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">1646,3</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">1959,1</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">41231215</Column>
+                <Column name="Name">Sonnmatt Design</Column>
+                <Column name="City">Glattbrugg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">41497647</Column>
+                <Column name="Name">Pilatus AG</Column>
+                <Column name="City">Luzern</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">41597832</Column>
+                <Column name="Name">MÃ¶bel Scherrer AG</Column>
+                <Column name="City">Aarhus N</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">42147258</Column>
+                <Column name="Name">BYT-KOMPLET s.r.o.</Column>
+                <Column name="City">Bojkovice</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">2483</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">2483</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">42258258</Column>
+                <Column name="Name">J &amp; V v.o.s.</Column>
+                <Column name="City">Vracov</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">42369147</Column>
+                <Column name="Name">PLECHKONSTRUKT a.s.</Column>
+                <Column name="City">Znojmo</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">43687129</Column>
+                <Column name="Name">Designstudio Gmunden</Column>
+                <Column name="City">Gmunden</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">21264,96</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">21264,96</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">43852147</Column>
+                <Column name="Name">Michael Feit - MÃ¶belhaus</Column>
+                <Column name="City">Wr. Neudorf</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">43871144</Column>
+                <Column name="Name">MÃ¶bel Siegfried</Column>
+                <Column name="City">Wien</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">44171511</Column>
+                <Column name="Name">Zuni Home Crafts Ltd.</Column>
+                <Column name="City">Dudley</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">44180220</Column>
+                <Column name="Name">Afrifield Corporation</Column>
+                <Column name="City">Maidstone</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">44756404</Column>
+                <Column name="Name">London Light Company</Column>
+                <Column name="City">Cambridge</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">45282828</Column>
+                <Column name="Name">Candoxy Kontor A/S</Column>
+                <Column name="City">Aarhus C</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">45282829</Column>
+                <Column name="Name">Carl Anthony</Column>
+                <Column name="City">Aarhus C</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">45779977</Column>
+                <Column name="Name">Ravel MÃ¸bler</Column>
+                <Column name="City">Klaipeda</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">45979797</Column>
+                <Column name="Name">Lauritzen KontormÃ¸bler A/S</Column>
+                <Column name="City">Aalborg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">46251425</Column>
+                <Column name="Name">Marsholm Karmstol</Column>
+                <Column name="City">Halmstad</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">46525241</Column>
+                <Column name="Name">Konberg Tapet AB</Column>
+                <Column name="City">JÃ¶nkÃ¶ping</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">46897889</Column>
+                <Column name="Name">Englunds KontorsmÃ¶bler AB</Column>
+                <Column name="City">NorrkÃ¶ping</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">1043,55</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">1043,55</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">47523687</Column>
+                <Column name="Name">Slubrevik Senger AS</Column>
+                <Column name="City">Asker</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">47563218</Column>
+                <Column name="Name">Klubben</Column>
+                <Column name="City">Haslum</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">18232,9</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">18232,9</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">47586954</Column>
+                <Column name="Name">SjÃ¸boden</Column>
+                <Column name="City">Sandvika</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">49525252</Column>
+                <Column name="Name">Beef House</Column>
+                <Column name="City">DÃ¼sseldorf</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">9294,03</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">25308,89</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">49633663</Column>
+                <Column name="Name">Autohaus Mielberg KG</Column>
+                <Column name="City">Hamburg 36</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">6709,27</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">15777,87</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">49858585</Column>
+                <Column name="Name">Hotel Pferdesee</Column>
+                <Column name="City">Frankfurt/Main</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">22298,71</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">26535,47</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">50000</Column>
+                <Column name="Name">Harburger BÃ¤derwelt</Column>
+                <Column name="City">Hamburg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">826,1</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">983,06</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">60000</Column>
+                <Column name="Name">Hi-Fi Spezialstore</Column>
+                <Column name="City">Hagen</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">61000</Column>
+                <Column name="Name">VisioSound</Column>
+                <Column name="City">Hamburg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">62000</Column>
+                <Column name="Name">Der GerÃ¤teladen</Column>
+                <Column name="City">Hamburg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">IC1020</Column>
+                <Column name="Name">Cronus Cardoxy Sales</Column>
+                <Column name="City">Copenhagen</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">JR</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+        <DataItem name="Customer">
+            <Columns>
+                <Column name="No">IC1030</Column>
+                <Column name="Name">Cronus Cardoxy Procurement</Column>
+                <Column name="City">Hamburg</Column>
+                <Column name="County"></Column>
+                <Column name="SalespersonCode">PS</Column>
+                <Column name="SalesLCY" decimalformatter="#,##0.00">0</Column>
+                <Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>
+            </Columns>
+        </DataItem>
+    </DataItems>
+</ReportDataSet>

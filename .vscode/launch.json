@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BC16-1",
+            "type": "al",
+            "request": "launch",
+            "server": "http://bc16-1/",
+            "serverInstance": "BC",
+            "authentication": "UserPassword",
+            "breakOnError": true,
+            "breakOnRecordWrite": false,
+            "launchBrowser": true,
+            "enableSqlInformationDebugger": true,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            "startupObjectType": "Report",
+            "startupObjectId": 50100,            
+        },
+        // {
+        //     "type": "al",
+        //     "request": "launch",
+        //     "name": "NAV2018 (Recreate)",
+        //     "server": "http://nav2018/",
+        //     "serverInstance": "NAV",
+        //     "authentication": "UserPassword",
+        //     "startupObjectId": 50201,
+        //     "port": 7049,
+        //     "schemaUpdateMode": "Recreate"
+        // }
+        ]
+}

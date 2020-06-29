@@ -1,0 +1,32 @@
+{
+    "name": "Ruleset",
+    "description": "Ruleset",
+    "rules": [
+        {
+            "id": "AA0005",
+            "action": "None",
+            "justification": "Begin und End erhöhen die Lesbarkeit"        
+        },
+        {
+            "id": "PTE0005",
+            "action": "Info",
+            "justification": "Für OnPrem ist Target internal noch erlaubt"
+        },
+        {
+            "id": "PTE0004",
+            "action": "Info",
+            "justification": "Permission Set am Ende über Batch / gemeinsam anlegen"
+        },
+        {
+            "id": "AA0214",
+            "action": "None",
+            "justification": "Buggy entry"
+        },
+        {
+            "id": "AA0218",
+            "action": "None",
+            "justification": "Not used"
+        }
+
+    ]
+}
