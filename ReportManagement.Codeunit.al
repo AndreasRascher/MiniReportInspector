@@ -21,7 +21,7 @@ codeunit 50100 "Report_Management"
         if ReportIDasIntegerOrText.IsInteger then
             ReportID := ReportIDasIntegerOrText;
         if ReportIDasIntegerOrText.IsText then
-            ReportId := GetNumberFromString(Format(ReportIDasIntegerOrText));
+            Evaluate(ReportId, CopyStr(ReportIDasIntegerOrText, 8));
         Found := (ReportID <> 0);
     end;
 
@@ -102,21 +102,5 @@ codeunit 50100 "Report_Management"
         Report.SaveAs(ReportID, RequestPageParams, ReportFormat::Xml, OutStr);
         TenantMedia.Content.CreateInStream(InStr, TextEncoding::Windows);
         XmlDocument.ReadFrom(InStr, XMLDoc);
-    end;
-
-    procedure GetNumberFromString(String: Text): integer
-    var
-        LoopNo: Integer;
-        ReportID: Integer;
-        ReportName: Text;
-        StringPart: Text;
-    begin
-        for LoopNo := 1 to StrLen(String) do begin
-            StringPart := CopyStr(String, LoopNo, 1);
-            if StringPart in ['0' .. '9'] then
-                reportName += StringPart;
-        end;
-        Evaluate(ReportID, ReportName);
-        exit(ReportID);
     end;
 }
