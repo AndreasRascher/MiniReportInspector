@@ -36,6 +36,7 @@ report 50100 "MyTestReport"
                     }
                 }
             }
+
         }
     }
     var
@@ -47,6 +48,6 @@ report 50100 "MyTestReport"
     begin
         if ExportDatasetOptions = ExportDatasetOptions::" " then
             exit;
-        Report_Management.ExportReportDataset(CurrReport.ObjectId(false), ExportDatasetOptions = ExportDatasetOptions::"Excel");
+        Report_Management.DownloadReportDataset(CurrReport.ObjectId(false), ExportDatasetOptions = ExportDatasetOptions::"Excel");
     end;
 }

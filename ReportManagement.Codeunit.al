@@ -1,6 +1,11 @@
 codeunit 50100 "Report_Management"
 {
-    procedure ExportReportDataset(ReportIDasIntegerOrText: Variant; ExportToExcel: Boolean)
+    /// <summary> 
+    /// Downloads the report dataset in xml or xlsx file format
+    /// </summary>
+    /// <param name="ReportIDasIntegerOrText">Report ID or result of CurrReport.ObjectId(false) </param>
+    /// <param name="ExportToExcel">True - export to excel, False - export to xml</param>
+    procedure DownloadReportDataset(ReportIDasIntegerOrText: Variant; ExportToExcel: Boolean)
     var
         ReportID: Integer;
         XMLDoc: XmlDocument;
@@ -16,7 +21,7 @@ codeunit 50100 "Report_Management"
             ExportDataSetXML(XMLDoc);
     end;
 
-    procedure TryFindReportID(ReportIDasIntegerOrText: Variant; var ReportID: Integer) Found: boolean
+    local procedure TryFindReportID(ReportIDasIntegerOrText: Variant; var ReportID: Integer) Found: boolean
     begin
         if ReportIDasIntegerOrText.IsInteger then
             ReportID := ReportIDasIntegerOrText;
@@ -25,6 +30,10 @@ codeunit 50100 "Report_Management"
         Found := (ReportID <> 0);
     end;
 
+    /// <summary> 
+    /// Converts the DataSet.xml to an excel file with column titles
+    /// </summary>
+    /// <param name="DataSetXML">Report XML Dataset</param>
     procedure ExportDataSetXMLAsExcel(DataSetXML: XmlDocument);
     var
         ExcelBuffer: Record "Excel Buffer" temporary;
