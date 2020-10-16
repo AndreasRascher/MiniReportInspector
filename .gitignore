@@ -1,3 +1,6 @@
 .vscode/.alcache/*
 .vscode/rad.json
 .alpackages/*.app
+.vscode/.altemplates/table.dictionary.json
+.vscode/.altemplates/table.entry.json
+Default publisher_MiniReportInspector_1.0.0.0.app
