@@ -2,14 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "BC16-1",
+            "name": "http://bc14/NAV/",
             "type": "al",
             "request": "launch",
-            "server": "http://bc16-1/",
-            "serverInstance": "BC",
+            "server": "http://bc14/",
+            "serverInstance": "NAV",
             "authentication": "UserPassword",
             "breakOnError": true,
-            "breakOnRecordWrite": false,
+            //"breakOnRecordWrite": false,
             "launchBrowser": true,
             "enableSqlInformationDebugger": true,
             "enableLongRunningSqlStatements": true,

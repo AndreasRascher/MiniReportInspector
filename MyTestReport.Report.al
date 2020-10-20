@@ -10,6 +10,7 @@ report 50100 "MyTestReport"
     {
         dataitem(Customer; Customer)
         {
+            RequestFilterFields = "No.";
             column(BalanceLCY; "Balance (LCY)") { }
             column(City; City) { }
             column(County; County) { }
@@ -28,26 +29,36 @@ report 50100 "MyTestReport"
             {
                 group(Options)
                 {
+                    field(ExportDataSetCtrl; ExportDataSet)
+                    {
+                        Caption = 'Export DataSet';
+                        ApplicationArea = all;
+                        Visible = not IsRunRequestPageMode;
+                        trigger OnValidate()
+                        begin
+                            DataSetExportHelper.OpenRequestPageForDatasetExport(CurrReport.ObjectId(false));
+                            ExportDataSet := false;
+                        end;
+                    }
                     field(DataSetExportOptionsCtrl; ExportDatasetOptions)
                     {
-                        OptionCaption = ' ,XML,Excel';
+                        OptionCaption = 'XML,Excel';
                         Caption = 'Export Dataset as';
                         ApplicationArea = All;
+                        Visible = IsRunRequestPageMode;
                     }
                 }
             }
-
         }
+        trigger OnOpenPage()
+        begin
+            IsRunRequestPageMode := DataSetExportHelper.GetRunReqPageMode();
+        end;
     }
     var
-        ExportDatasetOptions: Option " ","XML","Excel";
-
-    trigger OnPostReport()
-    var
-        Report_Management: Codeunit Report_Management;
-    begin
-        if ExportDatasetOptions = ExportDatasetOptions::" " then
-            exit;
-        Report_Management.DownloadReportDataset(CurrReport.ObjectId(false), ExportDatasetOptions = ExportDatasetOptions::"Excel");
-    end;
+        DataSetExportHelper: Codeunit DataSetExportHelper;
+        ExportDatasetOptions: Option "XML","Excel";
+        [InDataSet]
+        IsRunRequestPageMode: Boolean;
+        ExportDataSet: Boolean;
 }
