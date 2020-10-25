@@ -6,8 +6,9 @@ codeunit 50100 "DataSetExportHelper"
         ReportID: Integer;
         RequestPageParams: text;
         Selection: text;
+        ExportDatasetOptions: Option " ","XML","Excel";
     begin
-        Message('OpenRequestPageForDatasetExport IsRunRequestPageMode=%1', IsRunRequestPageMode);
+        //Message('OpenRequestPageForDatasetExport IsRunRequestPageMode=%1', IsRunRequestPageMode);
         if not TryFindReportID(ReportIDasIntegerOrText, ReportID) then
             Error('Invalid ReportID "%1"', ReportIDasIntegerOrText);
         SetRunReqPageMode(true);
@@ -16,21 +17,27 @@ codeunit 50100 "DataSetExportHelper"
         Selection := copystr(RequestPageParams, Strpos(RequestPageParams, '<Field name="ExportDatasetOptions">') + 35, 1);
         Case Selection of
             '0':
-                ExportDatasetOptions := ExportDatasetOptions::XML;
+                exit;
             '1':
+                ExportDatasetOptions := ExportDatasetOptions::XML;
+            '2':
                 ExportDatasetOptions := ExportDatasetOptions::Excel;
         end;
-        Message('OnBeforeDownloadDataSet');
-        DownloadDataset(ReportID, ExportDatasetOptions);
+        DownloadDataset(ReportID, RequestPageParams, Format(ExportDatasetOptions));
     end;
 
-    procedure DownloadDataset(ReportIDasIntegerOrText: Variant; ExportOptions: Option "XML","Excel")
+    procedure DownloadDataset(ReportID: Integer; RequestPageParams: Text; ExportOptionText: Text)
+    var
+        DataSetXML: XmlDocument;
+        Lines: List of [Dictionary of [Text, Text]];
     begin
-        case ExportOptions of
-            ExportOptions::Excel:
-                ExportDataSetAsExcel(DatasetXML);
-            ExportOptions::XML:
-                ExportDataSetasXML(DatasetXML);
+        DataSetXML := GetReportDatasetLines(ReportID, RequestPageParams);
+        TransformToTableLayoutXML(DataSetXML, Lines);
+        case Uppercase(ExportOptionText) of
+            'EXCEL':
+                ExportDataSetAsExcel(Lines);
+            'XML':
+                ExportDataSetasXML(Lines);
         end;
     end;
 
@@ -120,11 +127,26 @@ codeunit 50100 "DataSetExportHelper"
     /// Converts the DataSet.xml to an excel file with column titles
     /// </summary>
     /// <param name="DataSetXML">Report XML Dataset</param>
-    procedure ExportDataSetAsExcel(DataSetXML: XmlDocument);
+    procedure ExportDataSetAsExcel(Lines: List of [Dictionary of [Text, Text]]);
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
+        CurrRow: Integer;
+        Line: Dictionary of [Text, Text];
+        ColName: Text;
     begin
-        FlattenDataSetXMLIntoExcelBuffer(DataSetXML, TempExcelBuffer);
+        Foreach Line in Lines do begin
+            CurrRow += 1;
+            if CurrRow = 1 then begin
+                foreach ColName in Line.Keys do
+                    TempExcelBuffer.AddColumn(ColName, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.NewRow();
+            end;
+
+            foreach ColName in Line.Keys do begin
+                TempExcelBuffer.AddColumn(Line.Get(ColName), false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+            end;
+            TempExcelBuffer.NewRow();
+        end;
         TempExcelBuffer.CreateNewBook('SheetNameTxt');
         TempExcelBuffer.WriteSheet(Format(CurrentDateTime, 0, 9), CompanyName(), UserId());
         TempExcelBuffer.CloseBook();
@@ -132,60 +154,46 @@ codeunit 50100 "DataSetExportHelper"
         TempExcelBuffer.OpenExcel();
     end;
 
-    procedure ExportDataSetAsXML(DataSetXML: XmlDocument)
+    procedure ExportDataSetAsXML(Lines: List of [Dictionary of [Text, Text]])
     var
         TenantMedia: Record "Tenant Media";
-        OutStr: OutStream;
-        FlattenedDataSetXML: XmlDocument;
-        XRoot: XmlNode;
-        XNode: XmlNode;
-        XNode2: XmlNode;
-        ColumnNames: List of [Text];
-        DataSetRows: XmlNodeList;
-        DataSetCols: XmlNodeList;
+        Line: Dictionary of [Text, Text];
+        ColIndex: Integer;
         RowIndex: Integer;
-        ColumnIndex: Integer;
-        RowNode: XmlNode;
-        ColNode: XmlNode;
-        NodeValue: text;
-        AttrNode: XmlAttribute;
+        OutStr: OutStream;
+        FormattedDataSetXML: XmlDocument;
+        XResult: XmlNode;
+        XField: XmlNode;
+        XRoot: XmlNode;
+        ColName: Text;
     begin
         // Init Target XML Document
-        FlattenedDataSetXML := XmlDocument.Create();
+        FormattedDataSetXML := XmlDocument.Create();
         XRoot := XmlElement.Create('DataSet').AsXmlNode();
-        FlattenedDataSetXML.AddFirst(XRoot);
-
-        GetColumnNames(DataSetXML, ColumnNames);
+        FormattedDataSetXML.AddFirst(XRoot);
 
         // Export Rows
-        DataSetXML.SelectNodes('/ReportDataSet/DataItems/DataItem/Columns', DataSetRows);
-        for RowIndex := 1 to DataSetRows.Count do begin
-            XNode := XmlElement.Create('Result').AsXmlNode();
-            XRoot.AsXmlElement().Add(XNode);
-            DataSetRows.Get(RowIndex, RowNode);
-            RowNode.SelectNodes('node()', DataSetCols);  // Childnodes
+        foreach Line in Lines do begin
+            RowIndex += 1;
+            XResult := XmlElement.Create('Result').AsXmlNode();
+            XRoot.AsXmlElement().Add(XResult);
             // Lines
-            for ColumnIndex := 1 to DataSetCols.Count do begin
-                DataSetCols.Get(ColumnIndex, ColNode);
-                if ColNode.IsXmlElement then begin
-                    NodeValue := ColNode.AsXmlElement().InnerText;
-                    XNode2 := XmlElement.Create(ColumnNames.Get(ColumnIndex), '', NodeValue).AsXmlNode();
-                    XNode.AsXmlElement().Add(XNode2);
-                    if ColNode.AsXmlElement().Attributes().Get('decimalformatter', AttrNode) then begin
-                        NodeValue := AttrNode.Value();
-                        XNode2 := XmlElement.Create(ColumnNames.Get(ColumnIndex), '', NodeValue).AsXmlNode();
-                        XNode.AsXmlElement().Add(XNode2);
-                    end;
-                end;
+            foreach ColName in Line.Keys do begin
+                ColIndex += 1;
+                if Line.Get(ColName) <> '' then
+                    XField := XmlElement.Create(ColName, '', Line.Get(ColName)).AsXmlNode()
+                else
+                    XField := XmlElement.Create(ColName).AsXmlNode();
+                XResult.AsXmlElement().Add(XField);
             end;
         end;
 
         TenantMedia.Content.CreateOutStream(OutStr);
-        FlattenedDataSetXML.WriteTo(OutStr);
+        FormattedDataSetXML.WriteTo(OutStr);
         DownloadBlobContent(TenantMedia, 'DataSet.xml');
     end;
 
-    procedure GetReportDatasetXML(ReportID: Integer; RequestPageParams: Text) XMLDoc: XmlDocument
+    procedure GetReportDatasetLines(ReportID: Integer; RequestPageParams: Text) XMLDoc: XmlDocument
     var
         TenantMedia: Record "Tenant Media";
         InStr: InStream;
@@ -245,9 +253,85 @@ codeunit 50100 "DataSetExportHelper"
         exit(IsRunRequestPageMode);
     end;
 
+    procedure GetAttributeValue(XNode: XmlNode; AttrName: text) AttrValue: Text
+    begin
+        if not GetAttributeValue(XNode, AttrName, AttrValue) then
+            exit('');
+    end;
+
+    procedure GetAttributeValue(XNode: XmlNode; AttrName: text; var AttrValue: Text) OK: Boolean
+    var
+        AttrNode: XmlAttribute;
+    begin
+        Clear(AttrValue);
+        OK := XNode.AsXmlElement().Attributes().Get(AttrName, AttrNode);
+        if OK then
+            AttrValue := AttrNode.Value();
+    end;
+
+    /// <summary>
+    /// Transforms a hierarchical Dataset.xml result from report.saveasxml into its flat rdlc version
+    /// </summary>
+    /// <param name="DataSetXML">report.saveasxml Result</param>
+    /// <param name="Lines">Data Table</param>
+    procedure TransformToTableLayoutXML(DataSetXML: XMLDocument; var Lines: List of [Dictionary of [Text, Text]]);
+    var
+        XNodeList: XmlNodeList;
+        XNode_InnerDataItem: XmlNode;
+        Ancestors: XmlNodeList;
+        Ancestor: XmlNode;
+        Columns: XmlNodeList;
+        Col: XmlNode;
+        Line: Dictionary of [Text, Text];
+        ListCount: Integer;
+        DebugText: text;
+        DecimalFormatter: Text;
+        ColName: Text;
+        ColValue: Text;
+        DecimalValue: Decimal;
+    begin
+        // Foreach Dataitem without child Dataitems
+        DataSetXML.SelectNodes('//DataItem[count(DataItems)=0]', XNodeList);
+        ListCount := XnodeList.Count;
+        foreach XNode_InnerDataItem in XNodeList do begin
+            // Join all Columns from current dataiten and its ancestors (ancestor-or-self)
+            // New Line
+            Clear(Line);
+            XNode_InnerDataItem.SelectNodes('ancestor-or-self::DataItem', Ancestors);
+            ListCount := Ancestors.Count;
+            foreach Ancestor in Ancestors do begin
+                // If dataitem has columns
+                if Ancestor.SelectNodes('child::*', Columns) then
+                    if Columns.Get(1, Col) then
+                        if Col.AsXmlElement().Name = 'Columns' then
+                            if Col.SelectNodes('child::*', Columns) then
+                                foreach Col in Columns do
+                                    if Col.IsXmlElement then begin
+                                        Col.WriteTo(DebugText);
+                                        // Add Name and Values to Line
+                                        //<Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>                                        
+                                        ColName := GetAttributeValue(Col, 'name');
+                                        ColValue := Col.AsXmlElement().InnerText;
+                                        DecimalFormatter := GetAttributeValue(Col, 'decimalformatter');
+
+                                        if DecimalFormatter <> '' then begin
+                                            If evaluate(DecimalValue, ColValue) then
+                                                ColValue := Format(DecimalValue, 0, 9);
+                                            Line.Add(GetAttributeValue(Col, 'name'), ColValue);
+                                            Line.Add(ColName + 'Format', DecimalFormatter);
+                                        end else begin
+                                            Line.Add(ColName, ColValue);
+                                        end;
+
+                                    end;
+            end;
+            //Save line to data table
+            if Line.Count > 0 then
+                Lines.Add(Line);
+        end;
+    end;
+
     var
         IsRunRequestPageMode: Boolean;
-        DatasetXML: XmlDocument;
-        ExportDatasetOptions: Option "XML","Excel";
 
 }

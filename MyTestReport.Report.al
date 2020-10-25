@@ -8,16 +8,25 @@ report 50100 "MyTestReport"
 
     dataset
     {
-        dataitem(Customer; Customer)
+        dataitem("Salesperson/Purchaser"; "Salesperson/Purchaser")
         {
-            RequestFilterFields = "No.";
-            column(BalanceLCY; "Balance (LCY)") { }
-            column(City; City) { }
-            column(County; County) { }
-            column(Name; Name) { }
-            column(No; "No.") { }
-            column(SalesLCY; "Sales (LCY)") { }
-            column(SalespersonCode; "Salesperson Code") { }
+            RequestFilterFields = Code;
+            PrintOnlyIfDetail = true;
+            column(SalesPersonCode; Code) { }
+            column(SalesPersonName; Name) { }
+
+            dataitem(Customer; Customer)
+            {
+                DataItemLink = "Salesperson Code" = field(Code);
+
+                column(CustomerBalanceLCY; "Balance (LCY)") { }
+                column(CustomerCity; City) { }
+                column(CustomerCounty; County) { }
+                column(CustomerName; Name) { }
+                column(CustomerNo; "No.") { }
+                column(CustomerSalesLCY; "Sales (LCY)") { }
+                column(CustomerSalespersonCode; "Salesperson Code") { }
+            }
         }
     }
 
@@ -42,8 +51,8 @@ report 50100 "MyTestReport"
                     }
                     field(DataSetExportOptionsCtrl; ExportDatasetOptions)
                     {
-                        OptionCaption = 'XML,Excel';
                         Caption = 'Export Dataset as';
+                        ShowCaption = false;
                         ApplicationArea = All;
                         Visible = IsRunRequestPageMode;
                     }
@@ -57,7 +66,7 @@ report 50100 "MyTestReport"
     }
     var
         DataSetExportHelper: Codeunit DataSetExportHelper;
-        ExportDatasetOptions: Option "XML","Excel";
+        ExportDatasetOptions: Option "Select an export format","XML","Excel";
         [InDataSet]
         IsRunRequestPageMode: Boolean;
         ExportDataSet: Boolean;

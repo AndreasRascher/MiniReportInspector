@@ -15,19 +15,27 @@
             "enableLongRunningSqlStatements": true,
             "longRunningSqlStatementsThreshold": 500,
             "numberOfSqlStatements": 10,
-            "startupObjectType": "Report",
-            "startupObjectId": 50100,            
+            //"startupObjectType": "Report",
+            //"startupObjectId": 50100,            
         },
-        // {
-        //     "type": "al",
-        //     "request": "launch",
-        //     "name": "NAV2018 (Recreate)",
-        //     "server": "http://nav2018/",
-        //     "serverInstance": "NAV",
-        //     "authentication": "UserPassword",
-        //     "startupObjectId": 50201,
-        //     "port": 7049,
-        //     "schemaUpdateMode": "Recreate"
-        // }
+        {
+            "name": "http://bc17/BC/",
+            "type": "al",
+            "request": "launch",
+            "server": "http://bc17/",
+            "serverInstance": "BC",
+            "authentication": "UserPassword",
+            "breakOnError": true,
+            //"breakOnRecordWrite": false,
+            "launchBrowser": true,
+            "enableSqlInformationDebugger": true,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            //"startupObjectType": "Report",
+            //"startupObjectId": 50100,
+            "startupObjectType": "Page",
+            "startupObjectId": 130401
+        }
         ]
 }
