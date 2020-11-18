@@ -37,7 +37,8 @@ codeunit 50100 "DataSetExportHelper"
             'EXCEL':
                 ExportDataSetAsExcel(Lines);
             'XML':
-                ExportDataSetasXML(Lines);
+                //ExportDataSetAsXML(Lines);
+                ExportDataSetXML(DataSetXML);
         end;
     end;
 
@@ -154,7 +155,7 @@ codeunit 50100 "DataSetExportHelper"
         TempExcelBuffer.OpenExcel();
     end;
 
-    procedure ExportDataSetAsXML(Lines: List of [Dictionary of [Text, Text]])
+    procedure ExportDataSetAsResultSetXML(Lines: List of [Dictionary of [Text, Text]]; FormatAsResultSetXML: Boolean)
     var
         TenantMedia: Record "Tenant Media";
         Line: Dictionary of [Text, Text];
@@ -192,6 +193,17 @@ codeunit 50100 "DataSetExportHelper"
         FormattedDataSetXML.WriteTo(OutStr);
         DownloadBlobContent(TenantMedia, 'DataSet.xml');
     end;
+
+    procedure ExportDataSetXML(DataSetXML: XmlDocument)
+    var
+        TenantMedia: Record "Tenant Media";
+        OutStr: OutStream;
+    begin
+        TenantMedia.Content.CreateOutStream(OutStr);
+        DataSetXML.WriteTo(OutStr);
+        DownloadBlobContent(TenantMedia, 'DataSet.xml');
+    end;
+
 
     procedure GetReportDatasetLines(ReportID: Integer; RequestPageParams: Text) XMLDoc: XmlDocument
     var
@@ -292,48 +304,72 @@ codeunit 50100 "DataSetExportHelper"
     begin
         // Foreach Dataitem without child Dataitems
         case true of
-            DataSetXML.SelectNodes('//DataItem[count(DataItems)=0]', XNodeList):
-                ListCount := XnodeList.Count;
             DataSetXML.SelectNodes('//DataItem', XNodeList):
                 ListCount := XnodeList.Count;
         end;
 
         foreach XNode_InnerDataItem in XNodeList do begin
-            // Join all Columns from current dataiten and its ancestors (ancestor-or-self)
-            // New Line
-            Clear(Line);
-            XNode_InnerDataItem.SelectNodes('ancestor-or-self::DataItem', Ancestors);
-            ListCount := Ancestors.Count;
-            foreach Ancestor in Ancestors do begin
-                // If dataitem has columns
-                if Ancestor.SelectNodes('child::*', Columns) then
-                    if Columns.Get(1, Col) then
-                        if Col.AsXmlElement().Name = 'Columns' then
-                            if Col.SelectNodes('child::*', Columns) then
-                                foreach Col in Columns do
-                                    if Col.IsXmlElement then begin
-                                        Col.WriteTo(DebugText);
-                                        // Add Name and Values to Line
-                                        //<Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>                                        
-                                        ColName := GetAttributeValue(Col, 'name');
-                                        ColValue := Col.AsXmlElement().InnerText;
-                                        DecimalFormatter := GetAttributeValue(Col, 'decimalformatter');
+            if IsLeafDataItemWithoutChildDataItems(XNode_InnerDataItem) then begin
+                // Join all Columns from current dataiten and its ancestors (ancestor-or-self)
+                // New Line
+                Clear(Line);
+                XNode_InnerDataItem.SelectNodes('ancestor-or-self::DataItem', Ancestors);
+                ListCount := Ancestors.Count;
+                foreach Ancestor in Ancestors do begin
+                    // If dataitem has columns
+                    if Ancestor.SelectNodes('child::*', Columns) then
+                        if Columns.Get(1, Col) then
+                            if Col.AsXmlElement().Name = 'Columns' then
+                                if Col.SelectNodes('child::*', Columns) then
+                                    foreach Col in Columns do
+                                        if Col.IsXmlElement then begin
+                                            Col.WriteTo(DebugText);
+                                            // Add Name and Values to Line
+                                            //<Column name="BalanceLCY" decimalformatter="#,##0.00">0</Column>                                        
+                                            ColName := GetAttributeValue(Col, 'name');
+                                            ColValue := Col.AsXmlElement().InnerText;
+                                            DecimalFormatter := GetAttributeValue(Col, 'decimalformatter');
 
-                                        if DecimalFormatter <> '' then begin
-                                            If evaluate(DecimalValue, ColValue) then
-                                                ColValue := Format(DecimalValue, 0, 9);
-                                            Line.Add(GetAttributeValue(Col, 'name'), ColValue);
-                                            Line.Add(ColName + 'Format', DecimalFormatter);
-                                        end else begin
-                                            Line.Add(ColName, ColValue);
+                                            if DecimalFormatter <> '' then begin
+                                                If evaluate(DecimalValue, ColValue) then
+                                                    ColValue := Format(DecimalValue, 0, 9);
+                                                Line.Add(GetAttributeValue(Col, 'name'), ColValue);
+                                                Line.Add(ColName + 'Format', DecimalFormatter);
+                                            end else begin
+                                                Line.Add(ColName, ColValue);
+                                            end;
+
                                         end;
-
-                                    end;
+                end;
             end;
             //Save line to data table
             if Line.Count > 0 then
                 Lines.Add(Line);
         end;
+    end;
+
+    /// <summary>
+    /// Returns true if the DataItem Node has zero or empty "DataItems" children    
+    /// </summary>
+    /// <param name="XDataItem"></param>
+    /// <returns></returns>
+    procedure IsLeafDataItemWithoutChildDataItems(XDataItem: XmlNode) Result: Boolean
+    var
+        DataItemName: Text;
+        XDataItemsBelow: XmlNodeList;
+        XDataItems: XmlNode;
+    begin
+        GetAttributeValue(XDataItem, 'name', DataItemName); //debug
+        XDataItem.SelectNodes('./DataItems', XDataItemsBelow);
+        // Zero or empty <DataItems /> are accepted
+        if XDataItemsBelow.Count = 0 then
+            exit(true);
+        foreach XDataItems in XDataItemsBelow do begin
+            if XDataItems.IsXmlElement then
+                if not XDataItems.AsXmlElement().IsEmpty then
+                    exit(false);
+        end;
+        exit(true);
     end;
 
     var
