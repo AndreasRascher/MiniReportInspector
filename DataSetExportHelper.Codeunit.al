@@ -291,8 +291,13 @@ codeunit 50100 "DataSetExportHelper"
         DecimalValue: Decimal;
     begin
         // Foreach Dataitem without child Dataitems
-        DataSetXML.SelectNodes('//DataItem[count(DataItems)=0]', XNodeList);
-        ListCount := XnodeList.Count;
+        case true of
+            DataSetXML.SelectNodes('//DataItem[count(DataItems)=0]', XNodeList):
+                ListCount := XnodeList.Count;
+            DataSetXML.SelectNodes('//DataItem', XNodeList):
+                ListCount := XnodeList.Count;
+        end;
+
         foreach XNode_InnerDataItem in XNodeList do begin
             // Join all Columns from current dataiten and its ancestors (ancestor-or-self)
             // New Line
