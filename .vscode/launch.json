@@ -17,6 +17,23 @@
             "numberOfSqlStatements": 10,
             //"startupObjectType": "Report",
             //"startupObjectId": 50100,            
-        }
+        },
+        {
+            "name": "http://bc17/BC/",
+            "type": "al",
+            "request": "launch",
+            "server": "http://bc17/",
+            "serverInstance": "BC",
+            "authentication": "UserPassword",
+            "breakOnError": true,
+            //"breakOnRecordWrite": false,
+            "launchBrowser": true,
+            "enableSqlInformationDebugger": true,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            //"startupObjectType": "Report",
+            //"startupObjectId": 50100,            
+        }        
         ]
 }
