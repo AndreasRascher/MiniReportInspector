@@ -77,10 +77,6 @@ codeunit 50100 "DataSetExportHelper"
         Found := ColumnNames.Count > 0;
     end;
 
-    /// <summary> 
-    /// Converts the DataSet.xml to an excel file with column titles
-    /// </summary>
-    /// <param name="DataSetXML">Report XML Dataset</param>
     procedure ExportDataSetAsExcel(ColumnNames: List of [Text]; Lines: List of [List of [Text]]);
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
@@ -163,7 +159,7 @@ codeunit 50100 "DataSetExportHelper"
     begin
         TenantMedia.Content.CreateOutStream(OutStr);
         DataSetXML.WriteTo(OutStr);
-        DownloadBlobContent(TenantMedia, 'DataSet.xml');
+        DownloadBlobContent(TenantMedia, 'ReportSaveAsXML.xml');
     end;
 
     procedure GetReportDatasetXML(ReportID: Integer; RequestPageParams: Text) XMLDoc: XmlDocument

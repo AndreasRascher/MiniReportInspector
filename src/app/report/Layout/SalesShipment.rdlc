@@ -4875,23 +4875,11 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="SalesShipmentHeader_ID">
-          <DataField>SalesShipmentHeader_ID</DataField>
-        </Field>
-        <Field Name="SalesShipmentHeader_DataItemCnt">
-          <DataField>SalesShipmentHeader_DataItemCnt</DataField>
-        </Field>
         <Field Name="No_SalesShptHeader">
           <DataField>No_SalesShptHeader</DataField>
         </Field>
         <Field Name="PageCaption">
           <DataField>PageCaption</DataField>
-        </Field>
-        <Field Name="PageLoop_ID">
-          <DataField>PageLoop_ID</DataField>
-        </Field>
-        <Field Name="PageLoop_DataItemCnt">
-          <DataField>PageLoop_DataItemCnt</DataField>
         </Field>
         <Field Name="CompanyInfo2Picture">
           <DataField>CompanyInfo2Picture</DataField>
