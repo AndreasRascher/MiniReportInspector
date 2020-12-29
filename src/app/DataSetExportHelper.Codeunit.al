@@ -38,11 +38,11 @@ codeunit 50100 "DataSetExportHelper"
         //RemoveEmptyColumnsFromColumnNames(ColumnNames, Lines);
         case _ExportDataSetOptionsInteger of
             ExportDatasetOptions::Excel:
-                ExportDataSetAsExcel(ColumnNames, Lines);
+                DownloadDataSetExcel(ColumnNames, Lines);
             ExportDatasetOptions::"ReportSaveAs XML":
-                ExportDataSetXML(DataSetXML);
+                DownloadReportSaveAsXMLResult(DataSetXML);
             ExportDatasetOptions::"ResultSet XML":
-                ExportDataSetAsResultSetXML(ColumnNames, Lines);
+                DownloadResultSetXML(ColumnNames, Lines);
         end;
     end;
 
@@ -55,7 +55,7 @@ codeunit 50100 "DataSetExportHelper"
         Found := (ReportID <> 0);
     end;
 
-    procedure TryFindColumnNamesInRDLCLayout(ReportID: Integer; ColumnNames: List of [Text]) Found: Boolean
+    procedure TryFindColumnNamesInRDLCLayout(ReportID: Integer; var ColumnNames: List of [Text]) Found: Boolean
     var
         //Parse RDLC Layout
         LayoutInstream: InStream;
@@ -77,7 +77,7 @@ codeunit 50100 "DataSetExportHelper"
         Found := ColumnNames.Count > 0;
     end;
 
-    procedure ExportDataSetAsExcel(ColumnNames: List of [Text]; Lines: List of [List of [Text]]);
+    procedure DownloadDataSetExcel(ColumnNames: List of [Text]; Lines: List of [List of [Text]]);
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         CurrRow: Integer;
@@ -108,7 +108,7 @@ codeunit 50100 "DataSetExportHelper"
         TempExcelBuffer.OpenExcel();
     end;
 
-    procedure ExportDataSetAsResultSetXML(ColumnNames: List of [Text]; Lines: List of [List of [Text]])
+    procedure DownloadResultSetXML(ColumnNames: List of [Text]; Lines: List of [List of [Text]])
     var
         TenantMedia: Record "Tenant Media";
         Line: List of [Text];
@@ -152,13 +152,13 @@ codeunit 50100 "DataSetExportHelper"
         DownloadBlobContent(TenantMedia, 'ResultSet.xml');
     end;
 
-    procedure ExportDataSetXML(DataSetXML: XmlDocument)
+    procedure DownloadReportSaveAsXMLResult(ReportSaveAsXMLResult: XmlDocument)
     var
         TenantMedia: Record "Tenant Media";
         OutStr: OutStream;
     begin
         TenantMedia.Content.CreateOutStream(OutStr);
-        DataSetXML.WriteTo(OutStr);
+        ReportSaveAsXMLResult.WriteTo(OutStr);
         DownloadBlobContent(TenantMedia, 'ReportSaveAsXML.xml');
     end;
 
@@ -339,7 +339,7 @@ codeunit 50100 "DataSetExportHelper"
         XDataItem.SelectNodes('./Columns', XColumns);
         DataItemHasColumns := XColumns.Count > 0;
         case true of
-            IsTopLevelDataItem:
+            IsTopLevelDataItem and not IsLeafDataItem:
                 exit(false);
             IsLeafDataItem:
                 exit(true);

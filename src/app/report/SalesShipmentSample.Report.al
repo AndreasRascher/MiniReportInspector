@@ -614,7 +614,7 @@ report 50101 "SalesShipmentSample" // Report 208 Sales Shipment BC14
     var
         MailManagement: Codeunit "Mail Management";
     begin
-        exit(CurrReport.Preview or MailManagement.IsHandlingGetEmailBody);
+        exit(CurrReport.Preview or MailManagement.IsHandlingGetEmailBody());
     end;
 
     local procedure FormatAddressFields(SalesShipmentHeader: Record "Sales Shipment Header")
