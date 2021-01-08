@@ -10,11 +10,11 @@ pageextension 50101 "ReportLayoutSelection" extends "Report Layout Selection"
         // Add changes to page actions here
         addlast(Reporting)
         {
-            action(ExportDataSet)
+            action(MiniReportInspector)
             {
                 ApplicationArea = All;
                 Image = CreateXMLFile;
-                Caption = 'Export Report DataSet';
+                Caption = 'Mini Report Inspector';
 
                 trigger OnAction()
                 var

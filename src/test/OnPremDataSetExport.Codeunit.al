@@ -29,11 +29,10 @@ codeunit 50101 "OnPremDataSetExport"
         RequestPage.SaveAsXml(ParameterFileName, DataSetFileName);
     end;
 
-    local procedure SaveFileToReportInbox(Descr: text; Path: Text)
+    local procedure SaveFileToReportInbox(Descr: text[250]; Path: Text)
     var
         ReportInbox: Record "Report Inbox";
-        TempBlob: Record "Tenant Media";
-        FileMgt: Codeunit "File Management";
+        TempBlob: Record "Tenant Media" temporary;
     begin
         BLOBImportFromServerFile(TempBlob, Path);
         ReportInbox."Entry No." := 1;
@@ -56,7 +55,7 @@ codeunit 50101 "OnPremDataSetExport"
         //IsAllowedPath(FilePath, false);
 
         if not FILE.Exists(FilePath) then
-            Error('FileDoesNotExistErr', FilePath);
+            Error('FileDoesNotExistErr\"%1"', FilePath);
 
         InputFile.Open(FilePath);
         InputFile.CreateInStream(InStream);

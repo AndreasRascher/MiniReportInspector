@@ -18,6 +18,11 @@
             "justification": "Permission Set am Ende über Batch / gemeinsam anlegen"
         },
         {
+            "id": "AA0072",
+            "action": "None",
+            "justification": "The name of RequestPage is not valid. The name of variables and parameters must be suffixed with the type or object name."
+        },
+        {
             "id": "AA0214",
             "action": "None",
             "justification": "Buggy entry"
