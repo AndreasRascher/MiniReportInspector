@@ -15,8 +15,8 @@ The data is collected by parsing the SaveAsXML File (Columns) and the RLDC File 
 ## Integration Types
 
 ### "Report Layout Selection" Integration
-![RepLayoutSelection01](images\A01_ReportLayoutSelection.png)
+![RepLayoutSelection01](images//A01_ReportLayoutSelection.png)
 
-![RepLayoutSelection02](images\A02_RunReqPage.png)
+![RepLayoutSelection02](images/A02_RunReqPage.png)
 
 ### "Report Request Page" Integration
