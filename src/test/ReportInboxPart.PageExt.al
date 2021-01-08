@@ -10,7 +10,7 @@ pageextension 50100 "ReportInboxPart" extends "Report Inbox Part"
         // Add changes to page actions here
         addafter(Action11)
         {
-            action(CreateDataSetXMLInReportInbox)
+            action(RunTestToCreateDataSetXML_SaveResultInReportInbox)
             {
                 ApplicationArea = all;
                 Image = TestFile;

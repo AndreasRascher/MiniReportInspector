@@ -316,7 +316,7 @@ report 50101 "SalesShipmentSample" // Report 208 Sales Shipment BC14
                                 TrackingSpecBuffer.Next();
 
                             if not ShowCorrectionLines and TrackingSpecBuffer.Correction then
-                                CurrReport.Skip;
+                                CurrReport.Skip();
                             if TrackingSpecBuffer.Correction then
                                 TrackingSpecBuffer."Quantity (Base)" := -TrackingSpecBuffer."Quantity (Base)";
 
@@ -460,6 +460,7 @@ report 50101 "SalesShipmentSample" // Report 208 Sales Shipment BC14
                         ApplicationArea = All;
                         Visible = IsRunRequestPageMode;
                     }
+                    //-------------------------------------------------------------------------
                 }
             }
         }
@@ -509,7 +510,7 @@ report 50101 "SalesShipmentSample" // Report 208 Sales Shipment BC14
     trigger OnPreReport()
     begin
         if not CurrReport.UseRequestPage then
-            InitLogInteraction;
+            InitLogInteraction();
         AsmHeaderExists := false;
     end;
 
