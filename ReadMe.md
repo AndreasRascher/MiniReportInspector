@@ -15,8 +15,23 @@ The data is collected by parsing the SaveAsXML File (Columns) and the RLDC File 
 ## Integration Types
 
 ### "Report Layout Selection" Integration
-![RepLayoutSelection01](images//A01_ReportLayoutSelection.png)
+Start by clicking "Mini Report Inspector" Action.
 
-![RepLayoutSelection02](images/A02_RunReqPage.png)
+[<img src="images/A01_ReportLayoutSelection.png" width="400"/>](RepLayoutSelection01)
+
+Set your filters in the SaveRequestPage dialog.
+
+[<img src="images/A02_RunReqPage.png" width="400"/>](RepLayoutSelection02)
+
+Choose the export format from the Stringmenu.
+
+[<img src="images/A03_SelectFormat.png" width="400"/>](RepLayoutSelection03)
 
 ### "Report Request Page" Integration
+Toggle the Export DataSet Control
+
+[<img src="images/B01_ReqPageIntegration.png" width="400"/>](RequestPageIntegration01)
+
+Set your filters and export format in the SaveRequestPage dialog.
+
+[<img src="images/B02_ReqPageIntegration.png" width="400"/>](RequestPageIntegration02)
