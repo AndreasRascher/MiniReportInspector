@@ -17,7 +17,7 @@
             "numberOfSqlStatements": 10,
             "startupObjectType": "Page",
             "startupObjectId": 9652,            
-        }
+        },
         {
             "name": "http://bc17/BC/",
             "type": "al",
