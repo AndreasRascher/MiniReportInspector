@@ -1,21 +1,16 @@
 pageextension 50101 "ReportLayoutSelection" extends "Report Layout Selection"
 {
-    layout
-    {
-        // Add changes to page layout here
-    }
-
     actions
     {
-        // Add changes to page actions here
-        addlast(Reporting)
+        addlast(processing)
         {
             action(MiniReportInspector)
             {
                 ApplicationArea = All;
                 Image = CreateXMLFile;
                 Caption = 'Mini Report Inspector';
-
+                Promoted = true;
+                PromotedCategory = "Report";
                 trigger OnAction()
                 var
                     ReqPageParams: Text;
