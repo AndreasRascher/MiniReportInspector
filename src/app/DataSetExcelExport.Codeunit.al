@@ -1,33 +1,32 @@
-codeunit 80004 "RDLTablixBuilder"
+codeunit 80004 "DataSetExcelExport"
 {
-    Subtype = Test;
-    [Test]
-    procedure GetReportLayoutXML()
+    procedure Process(ReportID: Integer)
     var
-        DataSetExportHelper: Codeunit DataSetExportHelper;
-        LayoutXML: XmlDocument;
-        XmlNsMgr: XmlNamespaceManager;
-        XReportItemsOld: XmlNode;
-        XReportItemsNew: XmlNode;
-        XDummyNode: XmlNode;
-        ColumnNames: List of [Text];
-        ParamNames: List of [Text];
-        ParamName: Text;
-        XMLAsText: Text;
-        OStr: OutStream;
-        TenantMedia: Record "Tenant Media" temporary;
         CustomReportLayout: Record "Custom Report Layout";
         ReportLayoutSelection: Record "Report Layout Selection";
+        TenantMedia: Record "Tenant Media" temporary;
+        DataSetExportHelper: Codeunit DataSetExportHelper;
         RDLTablixBuilderEventSubs: Codeunit "RDLTablixBuilderEventSubs";
+        ColumnNames: List of [Text];
+        ParamNames: List of [Text];
+        OStr: OutStream;
+        ParamName: Text;
+        XMLAsText: Text;
+        LayoutXML: XmlDocument;
+        XmlNsMgr: XmlNamespaceManager;
+        XDummyNode: XmlNode;
+        XReportItemsNew: XmlNode;
+        XReportItemsOld: XmlNode;
     begin
-        FindReportRDLCLayout(Report::"Sales - Shipment", LayoutXML);
+        if not FindReportRDLCLayout(ReportID, LayoutXML) then
+            Error('No RDLC layout found in Report %1', ReportID);
         DataSetExportHelper.AddNamespaces(XmlNsMgr, LayoutXML);
-        DataSetExportHelper.TryFindColumnNamesInRDLCLayout(Report::"Sales - Shipment", ColumnNames);
+        DataSetExportHelper.TryFindColumnNamesInRDLCLayout(ReportID, ColumnNames);
         // Add Parameters to the Dataset Table
-        DataSetExportHelper.TryFindParameterNamesInRDLCLayout(Report::"Sales - Shipment", ParamNames);
-        foreach ParamName in ParamNames do begin
-            ColumnNames.Add(ParamName);
-        end;
+        DataSetExportHelper.TryFindParameterNamesInRDLCLayout(ReportID, ParamNames);
+        // foreach ParamName in ParamNames do begin
+        //     ColumnNames.Add(ParamName);
+        // end;
 
         LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Body/ns:ReportItems', XMLNsMgr, XReportItemsOld);
         XReportItemsNew := XmlElement.Create('ReportItems').AsXmlNode();
@@ -51,23 +50,20 @@ codeunit 80004 "RDLTablixBuilder"
 
         TenantMedia.Content.CreateOutStream(OStr);
         Clear(CustomReportLayout);
-        CustomReportLayout.Code := StrSubstNo('XL-%1', Report::"Sales - Shipment");
+        CustomReportLayout.Code := StrSubstNo('XL-%1', ReportID);
         CustomReportLayout.Type := CustomReportLayout.Type::RDLC;
         CustomReportLayout.Description := 'DataSet Excel Export';
-        CustomReportLayout."Report ID" := Report::"Sales - Shipment";
+        CustomReportLayout."Report ID" := ReportID;
         if CustomReportLayout.Insert(true) then;
         LayoutXML.WriteTo(XMLAsText);
         CustomReportLayout.SetLayout(XMLAsText);
         CustomReportLayout.Calcfields(Layout);
         CustomReportLayout."Custom XML Part" := CustomReportLayout.Layout;
-        //if "Layout Last Updated" > "Last Modified" then
-        CustomReportLayout."Layout Last Updated" := CustomReportLayout."Last Modified" + 1000; // Skip update
         CustomReportLayout.Modify();
-        //if CustomReportLayout."Layout Last Updated" > CustomReportLayout."Last Modified" then
-        //    Error('');
         ReportLayoutSelection.SetTempLayoutSelected(CustomReportLayout.Code);
         BindSubscription(RDLTablixBuilderEventSubs);
-        Report.SaveAs(Report::"Sales - Shipment", '', ReportFormat::Excel, OStr);
+        Report.SaveAs(ReportID, '', ReportFormat::Excel, OStr);
+        UnbindSubscription(RDLTablixBuilderEventSubs);
         DataSetExportHelper.DownloadBlobContent(TenantMedia, 'DataSet.xlsx');
         CustomReportLayout.Delete();
     end;
@@ -76,13 +72,9 @@ codeunit 80004 "RDLTablixBuilder"
     var
         TB: TextBuilder;
         i: Integer;
-        ColName: text;
         XMLDoc: XmlDocument;
         ColCount: Integer;
     begin
-        /*
-        Ausgaberendering für Bericht fehlgeschlagen. Fehler: The tablix ‘Tablix1’ has an incorrect number of TablixColumns. The number of TablixColumns must equal the number of innermost TablixMembers (TablixMembers with no submembers) in the TablixColumnHierarchy.
-        */
         ColCount := ColumnNames.Count;
         //ColCount := 2;
 
@@ -91,7 +83,7 @@ codeunit 80004 "RDLTablixBuilder"
         TB.AppendLine('  <TablixBody>');
         TB.AppendLine('    <TablixColumns>');
         for i := 1 To ColCount do begin
-            TB.AppendLine('      <TablixColumn><Width>1cm</Width></TablixColumn>');
+            TB.AppendLine('      <TablixColumn><Width>2cm</Width></TablixColumn>');
         end;
         TB.AppendLine('    </TablixColumns>');
         TB.AppendLine('    <TablixRows>');
@@ -105,14 +97,12 @@ codeunit 80004 "RDLTablixBuilder"
             TB.AppendLine('  			 <Textbox Name="HeaderField' + format(i) + '">');
             TB.AppendLine('  			   <CanGrow>true</CanGrow>');
             TB.AppendLine('  			   <KeepTogether>true</KeepTogether>');
-            TB.AppendLine('  			   <Paragraphs>');
-            TB.AppendLine('                  <Paragraph>');
+            TB.AppendLine('  			   <Paragraphs><Paragraph>');
             TB.AppendLine('  				   <TextRuns><TextRun>');
             TB.AppendLine('  				  	   <Value>' + ColumnNames.Get(i) + '</Value>');
             TB.AppendLine('  				  	   <Style><FontWeight>Bold</FontWeight></Style>');
             TB.AppendLine('  				   </TextRun></TextRuns><Style />');
-            TB.AppendLine('                  </Paragraph>');
-            TB.AppendLine('  			   </Paragraphs>');
+            TB.AppendLine('  			   </Paragraph></Paragraphs>');
             //TB.AppendLine('  			   <rd:DefaultName>Textbox' + format(i) + '</rd:DefaultName>');
             TB.AppendLine('  			 <Style />');
             TB.AppendLine('  		   </Textbox>');
@@ -126,7 +116,7 @@ codeunit 80004 "RDLTablixBuilder"
         TB.AppendLine('  	 <TablixRow>');
         TB.AppendLine('  	   <Height>0.25in</Height>');
         TB.AppendLine('  	   <TablixCells>');
-        for i := 1 To 2 /*ColumnNames.Count*/ do begin
+        for i := 1 To ColCount do begin
             TB.AppendLine('  		 <TablixCell>');
             TB.AppendLine('  		   <CellContents>');
             TB.AppendLine('  			 <Textbox Name="LineField' + format(i) + '">');

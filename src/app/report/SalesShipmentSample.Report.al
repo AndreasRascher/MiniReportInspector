@@ -97,7 +97,7 @@ report 80000 "SalesShipmentSample" // Report 208 Sales Shipment BC14
                             Clear(DimText);
                             Continue := false;
                             repeat
-                                OldDimText := DimText;
+                                OldDimText := CopyStr(DimText, 1, maxstrlen(OldDimText));
                                 if DimText = '' then
                                     DimText := StrSubstNo('%1 - %2', DimSetEntry1."Dimension Code", DimSetEntry1."Dimension Value Code")
                                 else

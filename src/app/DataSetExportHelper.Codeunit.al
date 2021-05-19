@@ -38,7 +38,7 @@ codeunit 80000 "DataSetExportHelper"
         //RemoveEmptyColumnsFromColumnNames(ColumnNames, Lines);
         case _ExportDataSetOptionsInteger of
             ExportDatasetOptions::Excel:
-                DownloadDataSetExcel(ColumnNames, Lines);
+                DownloadDataSetExcel(ReportId, ColumnNames, Lines);
             ExportDatasetOptions::"ReportSaveAs XML":
                 DownloadReportSaveAsXMLResult(DataSetXML);
             ExportDatasetOptions::"ResultSet XML":
@@ -99,35 +99,37 @@ codeunit 80000 "DataSetExportHelper"
         Found := ParameterNames.Count > 0;
     end;
 
-    procedure DownloadDataSetExcel(ColumnNames: List of [Text]; Lines: List of [List of [Text]]);
+    procedure DownloadDataSetExcel(ReportID: Integer; ColumnNames: List of [Text]; Lines: List of [List of [Text]]);
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         CurrRow: Integer;
         Line: List of [Text];
         ColName: Text;
         CellValue: Text;
+        DataSetExcelExport: Codeunit DataSetExcelExport;
     begin
-        Foreach Line in Lines do begin
-            CurrRow += 1;
-            if CurrRow = 1 then begin
-                foreach ColName in ColumnNames do begin
-                    CellValue := CopyStr(ColName, 1, MaxStrLen(TempExcelBuffer."Cell Value as Text"));
-                    TempExcelBuffer.AddColumn(CellValue, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                end;
-                TempExcelBuffer.NewRow();
-            end;
+        DataSetExcelExport.Process(ReportID);
+        // Foreach Line in Lines do begin
+        //     CurrRow += 1;
+        //     if CurrRow = 1 then begin
+        //         foreach ColName in ColumnNames do begin
+        //             CellValue := CopyStr(ColName, 1, MaxStrLen(TempExcelBuffer."Cell Value as Text"));
+        //             TempExcelBuffer.AddColumn(CellValue, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         end;
+        //         TempExcelBuffer.NewRow();
+        //     end;
 
-            foreach CellValue in Line do begin
-                CellValue := CopyStr(CellValue, 1, MaxStrLen(TempExcelBuffer."Cell Value as Text"));
-                TempExcelBuffer.AddColumn(CellValue, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-            end;
-            TempExcelBuffer.NewRow();
-        end;
-        TempExcelBuffer.CreateNewBook('SheetNameTxt');
-        TempExcelBuffer.WriteSheet(Format(CurrentDateTime, 0, 9), CompanyName(), UserId());
-        TempExcelBuffer.CloseBook();
-        TempExcelBuffer.SetFriendlyFilename('DataSetExport');
-        TempExcelBuffer.OpenExcel();
+        //     foreach CellValue in Line do begin
+        //         CellValue := CopyStr(CellValue, 1, MaxStrLen(TempExcelBuffer."Cell Value as Text"));
+        //         TempExcelBuffer.AddColumn(CellValue, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //     end;
+        //     TempExcelBuffer.NewRow();
+        // end;
+        // TempExcelBuffer.CreateNewBook('SheetNameTxt');
+        // TempExcelBuffer.WriteSheet(Format(CurrentDateTime, 0, 9), CompanyName(), UserId());
+        // TempExcelBuffer.CloseBook();
+        // TempExcelBuffer.SetFriendlyFilename('DataSetExport');
+        // TempExcelBuffer.OpenExcel();
     end;
 
     procedure DownloadResultSetXML(ColumnNames: List of [Text]; Lines: List of [List of [Text]])
