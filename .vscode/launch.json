@@ -33,7 +33,7 @@
             "longRunningSqlStatementsThreshold": 500,
             "numberOfSqlStatements": 10,
             "startupObjectType": "Page",
-            "startupObjectId": 9652,            
+            "startupObjectId": 130401,//9652,            
         }        
         ]
 }

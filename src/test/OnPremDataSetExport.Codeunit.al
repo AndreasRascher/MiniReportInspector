@@ -1,10 +1,10 @@
-codeunit 50101 "OnPremDataSetExport"
+codeunit 80003 "OnPremDataSetExport"
 {
     Subtype = Test;
 
     [Test]
-    [HandlerFunctions('Rep50101ReqPageHandler')]
-    procedure TestingReport50101()
+    [HandlerFunctions('Rep80000ReqPageHandler')]
+    procedure TestingReport80000()
     var
         SalesShipmentHeader: Record "Sales Shipment Header";
         SalesShipmentSample: Report SalesShipmentSample;
@@ -15,12 +15,12 @@ codeunit 50101 "OnPremDataSetExport"
         SalesShipmentSample.SetTableView(SalesShipmentHeader);
         SalesShipmentSample.UseRequestPage := true;
         SalesShipmentSample.Run();
-        //SaveFileToReportInbox('RP50101ParameterFile', ParameterFileName);
-        SaveFileToReportInbox('RP50101DataSetFile', DataSetFileName);
+        //SaveFileToReportInbox('RP80000ParameterFile', ParameterFileName);
+        SaveFileToReportInbox('RP80000DataSetFile', DataSetFileName);
     end;
 
     [RequestPageHandler]
-    procedure Rep50101ReqPageHandler(var RequestPage: TestRequestPage 50101)
+    procedure Rep80000ReqPageHandler(var RequestPage: TestRequestPage 80000)
     var
         FileMgt: Codeunit "File Management";
     begin

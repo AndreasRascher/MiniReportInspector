@@ -1,4 +1,4 @@
-pageextension 50100 "ReportInboxPart" extends "Report Inbox Part"
+pageextension 80001 "ReportInboxPart" extends "Report Inbox Part"
 {
     layout
     {

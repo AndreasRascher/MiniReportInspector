@@ -1,4 +1,4 @@
-report 50999 "SimpleSalesQuote"
+report 80001 "SimpleSalesQuote"
 {
     UsageCategory = Administration;
     ApplicationArea = All;
@@ -12,10 +12,14 @@ report 50999 "SimpleSalesQuote"
             column(No_SH; "No.") { }
             dataitem(SL; "Sales Line")
             {
-                column(No_; "No.") { }
+                column(No_; "No.") { IncludeCaption = true; }
                 column(Type; Format(Type, 0, 'number')) { }
                 column(Description; Description) { }
             }
         }
+    }
+    labels
+    {
+        PageLbl = 'Page: ';
     }
 }

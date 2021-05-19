@@ -1,4 +1,4 @@
-pageextension 50101 "ReportLayoutSelection" extends "Report Layout Selection"
+pageextension 80000 "ReportLayoutSelection" extends "Report Layout Selection"
 {
     actions
     {

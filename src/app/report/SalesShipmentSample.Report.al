@@ -1,4 +1,4 @@
-report 50101 "SalesShipmentSample" // Report 208 Sales Shipment BC14
+report 80000 "SalesShipmentSample" // Report 208 Sales Shipment BC14
 {
     DefaultLayout = RDLC;
     RDLCLayout = 'src/app/report/Layout/SalesShipment.rdlc';

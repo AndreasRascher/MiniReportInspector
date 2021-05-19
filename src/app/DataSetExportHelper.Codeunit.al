@@ -1,4 +1,4 @@
-codeunit 50100 "DataSetExportHelper"
+codeunit 80000 "DataSetExportHelper"
 {
     SingleInstance = true;
     procedure OpenRequestPageForDatasetExport(ReportIDasIntegerOrText: Variant)
@@ -75,6 +75,28 @@ codeunit 50100 "DataSetExportHelper"
             ColumnNames.Add(Name);
         end;
         Found := ColumnNames.Count > 0;
+    end;
+
+    procedure TryFindParameterNamesInRDLCLayout(ReportID: Integer; var ParameterNames: List of [Text]) Found: Boolean
+    var
+        //Parse RDLC Layout
+        LayoutInstream: InStream;
+        LayoutXML: XmlDocument;
+        XMLNsMgr: XmlNamespaceManager;
+        XParams: XmlNodeList;
+        XParam: XmlNode;
+        Name: Text;
+    begin
+        if not Report.RdlcLayout(ReportID, LayoutInstream) then
+            exit(false);
+        XmlDocument.ReadFrom(LayoutInstream, LayoutXML);
+        AddNamespaces(XMLNsMgr, LayoutXML);
+        LayoutXML.SelectNodes('/ns:Report/ns:ReportParameters/ns:ReportParameter', XMLNsMgr, XParams);
+        foreach XParam in XParams do begin
+            Name := GetXMLAttrValue(XParam, 'Name');
+            ParameterNames.Add(Name);
+        end;
+        Found := ParameterNames.Count > 0;
     end;
 
     procedure DownloadDataSetExcel(ColumnNames: List of [Text]; Lines: List of [List of [Text]]);

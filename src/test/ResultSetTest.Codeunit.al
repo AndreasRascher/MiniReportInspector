@@ -1,4 +1,4 @@
-codeunit 50103 "ResultSetTest"
+codeunit 80002 "ResultSetTest"
 {
     Subtype = Test;
 
@@ -12,7 +12,7 @@ codeunit 50103 "ResultSetTest"
         DataSetXML: XmlDocument;
     begin
         ReqPageParams := '<?xml version="1.0" standalone="yes"?>' +
-        '<ReportParameters name="SalesShipmentSample" id="50101">' +
+        '<ReportParameters name="SalesShipmentSample" id="80000">' +
         '  <Options>' +
         '    <Field name="ExportDataSet">false</Field>' +
         '    <Field name="ExportDatasetOptions">1</Field>' +
