@@ -18,6 +18,7 @@ codeunit 80004 "RDLTablixBuilder"
         TenantMedia: Record "Tenant Media" temporary;
         CustomReportLayout: Record "Custom Report Layout";
         ReportLayoutSelection: Record "Report Layout Selection";
+        RDLTablixBuilderEventSubs: Codeunit "RDLTablixBuilderEventSubs";
     begin
         FindReportRDLCLayout(Report::"Sales - Shipment", LayoutXML);
         DataSetExportHelper.AddNamespaces(XmlNsMgr, LayoutXML);
@@ -41,7 +42,13 @@ codeunit 80004 "RDLTablixBuilder"
         //Remove Footer
         if LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Page/ns:PageFooter', XmlNsMgr, XDummyNode) then
             XDummyNode.Remove();
+
+
+        // DEBUG: Download generated Layout
+        // ================================
         //DataSetExportHelper.DownloadReportSaveAsXMLResult(LayoutXML);
+
+
         TenantMedia.Content.CreateOutStream(OStr);
         Clear(CustomReportLayout);
         CustomReportLayout.Code := StrSubstNo('XL-%1', Report::"Sales - Shipment");
@@ -51,9 +58,15 @@ codeunit 80004 "RDLTablixBuilder"
         if CustomReportLayout.Insert(true) then;
         LayoutXML.WriteTo(XMLAsText);
         CustomReportLayout.SetLayout(XMLAsText);
-        CustomReportLayout hier
+        CustomReportLayout.Calcfields(Layout);
         CustomReportLayout."Custom XML Part" := CustomReportLayout.Layout;
+        //if "Layout Last Updated" > "Last Modified" then
+        CustomReportLayout."Layout Last Updated" := CustomReportLayout."Last Modified" + 1000; // Skip update
+        CustomReportLayout.Modify();
+        //if CustomReportLayout."Layout Last Updated" > CustomReportLayout."Last Modified" then
+        //    Error('');
         ReportLayoutSelection.SetTempLayoutSelected(CustomReportLayout.Code);
+        BindSubscription(RDLTablixBuilderEventSubs);
         Report.SaveAs(Report::"Sales - Shipment", '', ReportFormat::Excel, OStr);
         DataSetExportHelper.DownloadBlobContent(TenantMedia, 'DataSet.xlsx');
         CustomReportLayout.Delete();
@@ -65,12 +78,19 @@ codeunit 80004 "RDLTablixBuilder"
         i: Integer;
         ColName: text;
         XMLDoc: XmlDocument;
+        ColCount: Integer;
     begin
+        /*
+        Ausgaberendering für Bericht fehlgeschlagen. Fehler: The tablix ‘Tablix1’ has an incorrect number of TablixColumns. The number of TablixColumns must equal the number of innermost TablixMembers (TablixMembers with no submembers) in the TablixColumnHierarchy.
+        */
+        ColCount := ColumnNames.Count;
+        //ColCount := 2;
+
         TB.AppendLine('<?xml version="1.0" encoding="utf-8"?>');
         TB.AppendLine('<Tablix Name="Tablix1">');
         TB.AppendLine('  <TablixBody>');
         TB.AppendLine('    <TablixColumns>');
-        for i := 1 To 2 /*ColumnNames.Count*/ do begin
+        for i := 1 To ColCount do begin
             TB.AppendLine('      <TablixColumn><Width>1cm</Width></TablixColumn>');
         end;
         TB.AppendLine('    </TablixColumns>');
@@ -79,10 +99,10 @@ codeunit 80004 "RDLTablixBuilder"
         TB.AppendLine('  	 <TablixRow>');
         TB.AppendLine('  	   <Height>0.25in</Height>');
         TB.AppendLine('  	   <TablixCells>');
-        for i := 1 To 2 /*ColumnNames.Count*/ do begin
+        for i := 1 To ColCount do begin
             TB.AppendLine('  		 <TablixCell>');
             TB.AppendLine('  		   <CellContents>');
-            TB.AppendLine('  			 <Textbox Name="Textbox' + format(i) + '">');
+            TB.AppendLine('  			 <Textbox Name="HeaderField' + format(i) + '">');
             TB.AppendLine('  			   <CanGrow>true</CanGrow>');
             TB.AppendLine('  			   <KeepTogether>true</KeepTogether>');
             TB.AppendLine('  			   <Paragraphs>');
@@ -109,7 +129,7 @@ codeunit 80004 "RDLTablixBuilder"
         for i := 1 To 2 /*ColumnNames.Count*/ do begin
             TB.AppendLine('  		 <TablixCell>');
             TB.AppendLine('  		   <CellContents>');
-            TB.AppendLine('  			 <Textbox Name="Textbox' + format(i) + '">');
+            TB.AppendLine('  			 <Textbox Name="LineField' + format(i) + '">');
             TB.AppendLine('  			   <CanGrow>true</CanGrow>');
             TB.AppendLine('  			   <KeepTogether>true</KeepTogether>');
             TB.AppendLine('  			   <Paragraphs>');
@@ -133,7 +153,9 @@ codeunit 80004 "RDLTablixBuilder"
         TB.AppendLine('</TablixBody>');
         TB.AppendLine('<TablixColumnHierarchy>');
         TB.AppendLine('  <TablixMembers>');
-        TB.AppendLine('	   <TablixMember />');
+        for i := 1 To ColCount do begin
+            TB.AppendLine('	   <TablixMember />');
+        end;
         TB.AppendLine('  </TablixMembers>');
         TB.AppendLine('</TablixColumnHierarchy>');
         TB.AppendLine('<TablixRowHierarchy>');
