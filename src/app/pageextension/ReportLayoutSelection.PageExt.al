@@ -23,7 +23,7 @@ pageextension 80000 "ReportLayoutSelection" extends "Report Layout Selection"
                     ReportSaveAsXMLResult := DataSetExportHelper.GetReportDatasetXML(Rec."Report ID", ReqPageParams);
                     DataSetExportHelper.TryFindColumnNamesInRDLCLayout(Rec."Report ID", ColumnNames);
                     DataSetExportHelper.TransformToTableLayoutXML(ReportSaveAsXMLResult, ColumnNames, Lines);
-                    Choice := StrMenu('ResultSet XML,ReportSaveAs XML,Excel', 0, 'Export DataSet as:');
+                    Choice := StrMenu('ResultSet XML,ReportSaveAs XML,Excel', 3, 'Export DataSet as:');
                     case Choice of
                         1:
                             DataSetExportHelper.DownloadResultSetXML(ColumnNames, Lines);

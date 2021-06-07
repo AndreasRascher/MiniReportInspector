@@ -31,6 +31,16 @@
             "id": "AA0218",
             "action": "None",
             "justification": "Not used"
+        },
+        {
+            "id": "AA0073",
+            "action": "None",
+            "justification": "The name of temporary variable '<RecordVariable>' must be prefixed with Temp."
+        },
+        {
+            "id": "AA0217",
+            "action": "None",
+            "justification": "Use a text constant or label for format string in StrSubstNo."
         }
 
     ]

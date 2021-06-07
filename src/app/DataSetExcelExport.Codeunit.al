@@ -3,69 +3,49 @@ codeunit 80004 "DataSetExcelExport"
     procedure Process(ReportID: Integer)
     var
         CustomReportLayout: Record "Custom Report Layout";
-        ReportLayoutSelection: Record "Report Layout Selection";
+        TempExcelBuffer: Record "Excel Buffer" temporary;
+        TempNameValueBufferOut: Record "Name/Value Buffer" temporary;
         TenantMedia: Record "Tenant Media" temporary;
         DataSetExportHelper: Codeunit DataSetExportHelper;
-        RDLTablixBuilderEventSubs: Codeunit "RDLTablixBuilderEventSubs";
+        PrintResult_IStream: InStream;
         ColumnNames: List of [Text];
-        ParamNames: List of [Text];
-        OStr: OutStream;
-        ParamName: Text;
-        XMLAsText: Text;
+        PrintResult_OStream: OutStream;
         LayoutXML: XmlDocument;
-        XmlNsMgr: XmlNamespaceManager;
-        XDummyNode: XmlNode;
-        XReportItemsNew: XmlNode;
-        XReportItemsOld: XmlNode;
     begin
         if not FindReportRDLCLayout(ReportID, LayoutXML) then
             Error('No RDLC layout found in Report %1', ReportID);
-        DataSetExportHelper.AddNamespaces(XmlNsMgr, LayoutXML);
         DataSetExportHelper.TryFindColumnNamesInRDLCLayout(ReportID, ColumnNames);
         // Add Parameters to the Dataset Table
-        DataSetExportHelper.TryFindParameterNamesInRDLCLayout(ReportID, ParamNames);
-        // foreach ParamName in ParamNames do begin
-        //     ColumnNames.Add(ParamName);
-        // end;
-
-        LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Body/ns:ReportItems', XMLNsMgr, XReportItemsOld);
-        XReportItemsNew := XmlElement.Create('ReportItems').AsXmlNode();
-        XReportItemsNew.AsXmlElement().Add(CreateTablix(ColumnNames));
-        XReportItemsOld.ReplaceWith(XReportItemsNew);
-        LayoutXML.WriteTo(XMLAsText);
-        XMLAsText := XMLAsText.Replace(' xmlns=""', '');
-        XMLDocument.ReadFrom(XMLAsText, LayoutXML);
-        //Remove Header
-        if LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Page/ns:PageHeader', XmlNsMgr, XDummyNode) then
-            XDummyNode.Remove();
-        //Remove Footer
-        if LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Page/ns:PageFooter', XmlNsMgr, XDummyNode) then
-            XDummyNode.Remove();
-
+        CreateBlankLayoutAndAddTablix(LayoutXML, ColumnNames);
 
         // DEBUG: Download generated Layout
         // ================================
-        //DataSetExportHelper.DownloadReportSaveAsXMLResult(LayoutXML);
+        // DataSetExportHelper.DownloadReportSaveAsXMLResult(LayoutXML);
 
 
-        TenantMedia.Content.CreateOutStream(OStr);
-        Clear(CustomReportLayout);
-        CustomReportLayout.Code := StrSubstNo('XL-%1', ReportID);
-        CustomReportLayout.Type := CustomReportLayout.Type::RDLC;
-        CustomReportLayout.Description := 'DataSet Excel Export';
-        CustomReportLayout."Report ID" := ReportID;
-        if CustomReportLayout.Insert(true) then;
-        LayoutXML.WriteTo(XMLAsText);
-        CustomReportLayout.SetLayout(XMLAsText);
-        CustomReportLayout.Calcfields(Layout);
-        CustomReportLayout."Custom XML Part" := CustomReportLayout.Layout;
-        CustomReportLayout.Modify();
-        ReportLayoutSelection.SetTempLayoutSelected(CustomReportLayout.Code);
-        BindSubscription(RDLTablixBuilderEventSubs);
-        Report.SaveAs(ReportID, '', ReportFormat::Excel, OStr);
-        UnbindSubscription(RDLTablixBuilderEventSubs);
-        DataSetExportHelper.DownloadBlobContent(TenantMedia, 'DataSet.xlsx');
-        CustomReportLayout.Delete();
+        TenantMedia.Content.CreateOutStream(PrintResult_OStream);
+        RunReportWithLayout(PrintResult_OStream, ReportID, CustomReportLayout, LayoutXML);
+        TenantMedia.Insert(false);
+        TenantMedia.CalcFields(Content);
+        TenantMedia.Content.CreateInStream(PrintResult_IStream);
+        TempExcelBuffer.GetSheetsNameListFromStream(PrintResult_IStream, TempNameValueBufferOut);
+        TenantMedia.CalcFields(Content);
+        TenantMedia.Content.CreateInStream(PrintResult_IStream);
+        TempExcelBuffer.OpenBookStream(PrintResult_IStream, TempNameValueBufferOut.Value);
+        TempExcelBuffer.ReadSheet();
+        If TempExcelBuffer.FindFirst() then begin
+            TempExcelBuffer.SetRange("Row No.", TempExcelBuffer."Row No.");
+            TempExcelBuffer.ModifyAll(Bold, true);
+            TempExcelBuffer.SetRange("Row No.");
+        end;
+        // Create New Excel
+        TempExcelBuffer.CreateNewBook('SheetNameTxt');
+        TempExcelBuffer.WriteSheet(Format(CurrentDateTime, 0, 9), CompanyName(), UserId());
+        TempExcelBuffer.CloseBook();
+        TempExcelBuffer.SetFriendlyFilename('DataSetExport');
+        TempExcelBuffer.OpenExcel();
+        Error('1. ToDo: Fehlermeldung beim löschen der Zeile in der Berichtsauswahl' +
+              '2. TODO: XML Export des DataSets');
     end;
 
     local procedure CreateTablix(ColumnNames: List of [Text]) XTablix: XmlElement
@@ -179,5 +159,96 @@ codeunit 80004 "DataSetExcelExport"
         if not Report.RdlcLayout(ReportID, LayoutInstream) then
             exit(false);
         Found := XmlDocument.ReadFrom(LayoutInstream, LayoutXML);
+    end;
+
+    local procedure CreateCustomLayoutEntry(var CustomReportLayout: Record "Custom Report Layout"; ReportID: Integer; var LayoutXML: XmlDocument)
+    var
+        TenantMedia: Record "Tenant Media" temporary;
+        OStr: OutStream;
+        XMLAsText: Text;
+        InsertOK: Boolean;
+    begin
+        TenantMedia.Content.CreateOutStream(OStr);
+        Clear(CustomReportLayout);
+        CustomReportLayout.Code := StrSubstNo('XL-%1', ReportID);
+        CustomReportLayout.Type := CustomReportLayout.Type::RDLC;
+        CustomReportLayout.Description := 'DataSet Excel Export';
+        CustomReportLayout."Report ID" := ReportID;
+        InsertOK := CustomReportLayout.Insert(true);
+        LayoutXML.WriteTo(XMLAsText);
+        CustomReportLayout.SetLayout(XMLAsText);
+        CustomReportLayout.Calcfields(Layout);
+        CustomReportLayout."Custom XML Part" := CustomReportLayout.Layout;
+        CustomReportLayout.Modify();
+    end;
+
+    local procedure RunReportWithLayout(var PrintResult_OStr: OutStream; ReportID: Integer; var CustomReportLayout: Record "Custom Report Layout"; var LayoutXML: XmlDocument)
+    var
+        ReportLayoutSelection_Existing: Record "Report Layout Selection";
+        ReportLayoutSelection: Record "Report Layout Selection";
+        ModificationType: Option " ",modified,new;
+    begin
+        // Set new Layout code so it works with BC14
+        CreateCustomLayoutEntry(CustomReportLayout, ReportID, LayoutXML);
+        if not ReportLayoutSelection_Existing.Get(ReportID, CompanyName) then begin
+            ReportLayoutSelection."Report ID" := ReportID;
+            ReportLayoutSelection."Company Name" := CompanyName;
+            ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
+            ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
+            ReportLayoutSelection.insert(true);
+            ModificationType := ModificationType::new;
+        end else begin
+            ReportLayoutSelection := ReportLayoutSelection_Existing;
+            ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
+            ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
+            ReportLayoutSelection.Modify(true);
+            ModificationType := ModificationType::modified;
+        end;
+        Report.SaveAs(ReportID, '', ReportFormat::Excel, PrintResult_OStr);
+        // Restore old state
+        case ModificationType of
+            ModificationType::new:
+                begin
+                    ReportLayoutSelection.Delete(true);
+                    CustomReportLayout.Delete(true);
+                end;
+            ModificationType::modified:
+                begin
+                    //ReportLayoutSelection := ReportLayoutSelection_Existing;
+                    //ReportLayoutSelection.Modify();
+                    //ReportLayoutSelection_Existing.Modify();
+                    Commit();
+                    CustomReportLayout.Find('=');
+                    CustomReportLayout.Delete(true);
+                end;
+        end;
+    end;
+
+    local procedure CreateBlankLayoutAndAddTablix(var LayoutXML: XmlDocument; var ColumnNames: List of [Text])
+    var
+        DataSetExportHelper: Codeunit DataSetExportHelper;
+        Debug: Boolean;
+        XMLAsText: Text;
+        XmlNsMgr: XmlNamespaceManager;
+        XDummyNode: XmlNode;
+        XReportItemsNew: XmlNode;
+        XReportItemsOld: XmlNode;
+        XReportItemsList: XmlNodeList;
+    begin
+        DataSetExportHelper.AddNamespaces(XmlNsMgr, LayoutXML);
+        Debug := LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Body/ns:ReportItems', XMLNsMgr, XReportItemsOld);
+        Debug := LayoutXML.SelectNodes('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Body/ns:ReportItems', XMLNsMgr, XReportItemsList);
+        XReportItemsNew := XmlElement.Create('ReportItems').AsXmlNode();
+        XReportItemsNew.AsXmlElement().Add(CreateTablix(ColumnNames));
+        XReportItemsOld.ReplaceWith(XReportItemsNew);
+        LayoutXML.WriteTo(XMLAsText);
+        XMLAsText := XMLAsText.Replace(' xmlns=""', '');
+        XMLDocument.ReadFrom(XMLAsText, LayoutXML);
+        //Remove Header
+        if LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Page/ns:PageHeader', XmlNsMgr, XDummyNode) then
+            XDummyNode.Remove();
+        //Remove Footer
+        if LayoutXML.SelectSingleNode('/ns:Report/ns:ReportSections/ns:ReportSection/ns:Page/ns:PageFooter', XmlNsMgr, XDummyNode) then
+            XDummyNode.Remove();
     end;
 }
