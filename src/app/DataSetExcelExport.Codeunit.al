@@ -25,6 +25,7 @@ codeunit 80004 "DataSetExcelExport"
 
         TenantMedia.Content.CreateOutStream(PrintResult_OStream);
         RunReportWithLayout(PrintResult_OStream, ReportID, CustomReportLayout, LayoutXML);
+
         TenantMedia.Insert(false);
         TenantMedia.CalcFields(Content);
         TenantMedia.Content.CreateInStream(PrintResult_IStream);
@@ -44,8 +45,7 @@ codeunit 80004 "DataSetExcelExport"
         TempExcelBuffer.CloseBook();
         TempExcelBuffer.SetFriendlyFilename('DataSetExport');
         TempExcelBuffer.OpenExcel();
-        Error('1. ToDo: Fehlermeldung beim löschen der Zeile in der Berichtsauswahl' +
-              '2. TODO: XML Export des DataSets');
+        Message('1. TODO: XML Export des DataSets');
     end;
 
     local procedure CreateTablix(ColumnNames: List of [Text]) XTablix: XmlElement
@@ -161,14 +161,10 @@ codeunit 80004 "DataSetExcelExport"
         Found := XmlDocument.ReadFrom(LayoutInstream, LayoutXML);
     end;
 
-    local procedure CreateCustomLayoutEntry(var CustomReportLayout: Record "Custom Report Layout"; ReportID: Integer; var LayoutXML: XmlDocument)
+    local procedure CreateCustomLayoutEntry(var CustomReportLayout: Record "Custom Report Layout"; ReportID: Integer; var LayoutXML: XmlDocument) InsertOK: Boolean;
     var
-        TenantMedia: Record "Tenant Media" temporary;
-        OStr: OutStream;
         XMLAsText: Text;
-        InsertOK: Boolean;
     begin
-        TenantMedia.Content.CreateOutStream(OStr);
         Clear(CustomReportLayout);
         CustomReportLayout.Code := StrSubstNo('XL-%1', ReportID);
         CustomReportLayout.Type := CustomReportLayout.Type::RDLC;
@@ -177,51 +173,53 @@ codeunit 80004 "DataSetExcelExport"
         InsertOK := CustomReportLayout.Insert(true);
         LayoutXML.WriteTo(XMLAsText);
         CustomReportLayout.SetLayout(XMLAsText);
-        CustomReportLayout.Calcfields(Layout);
-        CustomReportLayout."Custom XML Part" := CustomReportLayout.Layout;
-        CustomReportLayout.Modify();
+        //CustomReportLayout.Modify();
     end;
 
     local procedure RunReportWithLayout(var PrintResult_OStr: OutStream; ReportID: Integer; var CustomReportLayout: Record "Custom Report Layout"; var LayoutXML: XmlDocument)
     var
-        ReportLayoutSelection_Existing: Record "Report Layout Selection";
         ReportLayoutSelection: Record "Report Layout Selection";
+        ReportLayoutSelection_Existing: Record "Report Layout Selection";
         ModificationType: Option " ",modified,new;
     begin
         // Set new Layout code so it works with BC14
         CreateCustomLayoutEntry(CustomReportLayout, ReportID, LayoutXML);
+        ReportLayoutSelection.SetTempLayoutSelected(CustomReportLayout.Code);
         if not ReportLayoutSelection_Existing.Get(ReportID, CompanyName) then begin
-            ReportLayoutSelection."Report ID" := ReportID;
-            ReportLayoutSelection."Company Name" := CompanyName;
-            ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
-            ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
-            ReportLayoutSelection.insert(true);
-            ModificationType := ModificationType::new;
+            // ReportLayoutSelection."Report ID" := ReportID;
+            // ReportLayoutSelection."Company Name" := CompanyName;
+            // ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
+            // ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
+            // ReportLayoutSelection.insert(true);
+            // ModificationType := ModificationType::new;
         end else begin
-            ReportLayoutSelection := ReportLayoutSelection_Existing;
-            ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
-            ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
-            ReportLayoutSelection.Modify(true);
-            ModificationType := ModificationType::modified;
+            // ReportLayoutSelection := ReportLayoutSelection_Existing;
+            // ReportLayoutSelection.Type := ReportLayoutSelection.Type::"Custom Layout";
+            // ReportLayoutSelection."Custom Report Layout Code" := CustomReportLayout.Code;
+            // ReportLayoutSelection.Modify(true);
+            // ModificationType := ModificationType::modified;
         end;
         Report.SaveAs(ReportID, '', ReportFormat::Excel, PrintResult_OStr);
         // Restore old state
-        case ModificationType of
-            ModificationType::new:
-                begin
-                    ReportLayoutSelection.Delete(true);
-                    CustomReportLayout.Delete(true);
-                end;
-            ModificationType::modified:
-                begin
-                    //ReportLayoutSelection := ReportLayoutSelection_Existing;
-                    //ReportLayoutSelection.Modify();
-                    //ReportLayoutSelection_Existing.Modify();
-                    Commit();
-                    CustomReportLayout.Find('=');
-                    CustomReportLayout.Delete(true);
-                end;
-        end;
+        if CustomReportLayout.Delete(true) then;
+        // case ModificationType of
+        //     ModificationType::new:
+        //         begin
+        //             ReportLayoutSelection.Delete(true);
+        //             CustomReportLayout.Delete(true);
+        //         end;
+        //     ModificationType::modified:
+        //         begin
+        //             //ReportLayoutSelection := ReportLayoutSelection_Existing;
+        //             //ReportLayoutSelection.Modify();
+        //             //ReportLayoutSelection_Existing.Modify();
+        //             if Confirm('Neues Layout löschen') then begin
+        //                 Commit();
+        //                 CustomReportLayout.Find('=');
+        //                 CustomReportLayout.Delete(true);
+        //             end;
+        //         end;
+        // end;
     end;
 
     local procedure CreateBlankLayoutAndAddTablix(var LayoutXML: XmlDocument; var ColumnNames: List of [Text])

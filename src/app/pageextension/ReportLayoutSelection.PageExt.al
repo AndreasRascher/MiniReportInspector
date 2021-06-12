@@ -11,6 +11,7 @@ pageextension 80000 "ReportLayoutSelection" extends "Report Layout Selection"
                 Caption = 'Mini Report Inspector';
                 Promoted = true;
                 PromotedCategory = "Report";
+                Scope = Repeater;
                 trigger OnAction()
                 var
                     ReqPageParams: Text;
